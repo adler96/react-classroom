@@ -1,7 +1,13 @@
 import React from 'react'
 
-export default function Student({ nom }) {
+export default function Student({ student, onDelete }) {
     return (
-        <li>{ nom }</li>
+        <div>
+            {student.nom} &emsp;
+            <button 
+            onClick={() => onDelete(student.id)}>
+                X
+            </button>
+        </div>
     )
 }

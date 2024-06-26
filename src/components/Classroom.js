@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Student from './Student'
+import AddStudent from './AddStudent'
 
 export default function Classroom(props) {
     const [ students, setStudents ] = useState(
@@ -10,13 +11,41 @@ export default function Classroom(props) {
         ]
     );
 
+    function handleDelete(id) {
+        setStudents(prevStudents => 
+            prevStudents.filter(student => 
+                student.id !== id
+            ) 
+        );
+    }
+
+    function handleAdd(nom) {
+        const newStudent = {id: Date.now(), nom: nom};
+        setStudents([...students, newStudent]);
+    }
+
+    // if(!students.length) {
+    //     return (
+    //         <div>
+    //             <h1>La liste des apprenants de {props.nom}</h1>
+    //             <p>Aucun apprenant</p>
+    //         </div>
+    //     )
+    // }
+
+    
     return (
         <div>
+            <AddStudent onAdd={handleAdd} />
             <h1>Liste des Etudiants de {props.nom}</h1>
             <ul>
-                <Student nom={students[0].nom} />
-                <Student nom={students[1].nom} />
-                <Student nom={students[2].nom} />
+                {
+                    (!students.length) ? <p>Aucun apprenant</p> :
+                    students.map(student => <Student
+                        student={student}
+                        key={student.id}
+                        onDelete={handleDelete} />)
+                }
             </ul>
         </div>
     )
